@@ -32,6 +32,10 @@ app.get("/", (req, res) => {
   res.send("API WORKING");
 });
 
+app.get("/api/health", (req, res) => {
+  res.json({ status: "ok", service: "ecommerce-backend" });
+});
+
 app.listen(port, () => {
   console.log(`Server started at port ${port}`);
 });
