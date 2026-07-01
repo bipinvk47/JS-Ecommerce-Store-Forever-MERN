@@ -33,7 +33,11 @@ app.get("/", (req, res) => {
 });
 
 app.get("/api/health", (req, res) => {
-  res.json({ status: "ok", service: "ecommerce-backend" });
+  res.json({
+    status: "ok",
+    service: "ecommerce-backend",
+    triggerTest: "TP-1313-push",
+  });
 });
 
 app.listen(port, () => {
