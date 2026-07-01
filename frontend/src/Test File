@@ -1,0 +1,146 @@
+// ConfidenceEngine.jsx
+
+import React from "react";
+
+const getConfidenceColor = (score) => {
+  if (score >= 85) return "bg-green-500";
+  if (score >= 60) return "bg-yellow-500";
+  return "bg-red-500";
+};
+
+const getConfidenceLabel = (score) => {
+  if (score >= 85) return "High";
+  if (score >= 60) return "Medium";
+  return "Low";
+};
+
+const ConfidenceEngine = () => {
+  const confidenceScore = 87;
+
+  const factors = [
+    {
+      title: "Requirement Completeness",
+      score: 92,
+      status: "Passed",
+    },
+    {
+      title: "Acceptance Criteria",
+      score: 85,
+      status: "Passed",
+    },
+    {
+      title: "Business Clarity",
+      score: 80,
+      status: "Passed",
+    },
+    {
+      title: "Ambiguity Detection",
+      score: 65,
+      status: "Needs Review",
+    },
+    {
+      title: "Edge Case Coverage",
+      score: 78,
+      status: "Passed",
+    },
+  ];
+
+  return (
+    <div className="min-h-screen bg-gray-100 p-8">
+      <div className="max-w-5xl mx-auto bg-white rounded-xl shadow-lg p-8">
+        <h1 className="text-3xl font-bold mb-2">Confidence Engine</h1>
+        <p className="text-gray-500 mb-8">
+          AI confidence evaluation of the generated requirement.
+        </p>
+
+        {/* Overall Confidence */}
+        <div className="mb-8">
+          <div className="flex justify-between mb-2">
+            <span className="font-semibold text-lg">
+              Overall Confidence
+            </span>
+            <span className="font-bold text-xl">
+              {confidenceScore}%
+            </span>
+          </div>
+
+          <div className="w-full bg-gray-200 rounded-full h-5">
+            <div
+              className={`${getConfidenceColor(
+                confidenceScore
+              )} h-5 rounded-full transition-all duration-500`}
+              style={{ width: `${confidenceScore}%` }}
+            />
+          </div>
+
+          <span
+            className={`inline-block mt-3 px-3 py-1 rounded-full text-white text-sm ${getConfidenceColor(
+              confidenceScore
+            )}`}
+          >
+            {getConfidenceLabel(confidenceScore)} Confidence
+          </span>
+        </div>
+
+        {/* Breakdown */}
+        <div>
+          <h2 className="text-xl font-semibold mb-4">
+            Confidence Breakdown
+          </h2>
+
+          <div className="space-y-4">
+            {factors.map((factor) => (
+              <div
+                key={factor.title}
+                className="border rounded-lg p-4"
+              >
+                <div className="flex justify-between mb-2">
+                  <span className="font-medium">{factor.title}</span>
+                  <span className="font-semibold">
+                    {factor.score}%
+                  </span>
+                </div>
+
+                <div className="w-full bg-gray-200 rounded-full h-3">
+                  <div
+                    className={`${getConfidenceColor(
+                      factor.score
+                    )} h-3 rounded-full`}
+                    style={{ width: `${factor.score}%` }}
+                  />
+                </div>
+
+                <div className="mt-2 text-sm text-gray-600">
+                  Status:
+                  <span
+                    className={`ml-2 font-medium ${
+                      factor.status === "Passed"
+                        ? "text-green-600"
+                        : "text-yellow-600"
+                    }`}
+                  >
+                    {factor.status}
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Recommendation */}
+        <div className="mt-8 bg-blue-50 border border-blue-200 rounded-lg p-5">
+          <h3 className="font-semibold text-lg mb-2">
+            Recommendation
+          </h3>
+          <p className="text-gray-700">
+            The requirement is implementation-ready with high confidence.
+            Review the ambiguity findings before moving to development to
+            improve overall quality.
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default ConfidenceEngine;
