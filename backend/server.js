@@ -36,7 +36,8 @@ app.get("/api/health", (req, res) => {
   res.json({
     status: "ok",
     service: "ecommerce-backend",
-    triggerTest: "TP-1313-push-2",
+    triggerTest: "TP-1313-pr-merge",
+    version: 1,
   });
 });
 
