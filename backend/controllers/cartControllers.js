@@ -1,11 +1,27 @@
 import userModel from "../models/userModel.js";
+import {
+  handleControllerError,
+  requireFields,
+  sendFailure,
+  sendSuccess,
+} from "../utils/apiResponse.js";
 
 // Add products to user's cart
 const addToCart = async (req, res) => {
   try {
     const { userId, itemId, size } = req.body;
+    const validationError = requireFields(req.body, ["userId", "itemId", "size"]);
+
+    if (validationError) {
+      return sendFailure(res, validationError, 400);
+    }
 
     const userData = await userModel.findById(userId);
+
+    if (!userData) {
+      return sendFailure(res, "User not found", 404);
+    }
+
     let cartData = await userData.cartData;
 
     if (cartData[itemId]) {
@@ -21,16 +37,9 @@ const addToCart = async (req, res) => {
 
     await userModel.findByIdAndUpdate(userId, { cartData });
 
-    res.json({
-      success: true,
-      message: "Added to cart",
-    });
+    return sendSuccess(res, { message: "Added to cart" });
   } catch (error) {
-    console.log(error);
-    res.json({
-      success: false,
-      message: error.message,
-    });
+    return handleControllerError(res, error, "addToCart");
   }
 };
 
@@ -38,24 +47,40 @@ const addToCart = async (req, res) => {
 const updateCart = async (req, res) => {
   try {
     const { userId, itemId, size, quantity } = req.body;
+    const validationError = requireFields(req.body, [
+      "userId",
+      "itemId",
+      "size",
+      "quantity",
+    ]);
+
+    if (validationError) {
+      return sendFailure(res, validationError, 400);
+    }
+
+    if (Number(quantity) < 0) {
+      return sendFailure(res, "Quantity must be zero or greater", 400);
+    }
 
     const userData = await userModel.findById(userId);
+
+    if (!userData) {
+      return sendFailure(res, "User not found", 404);
+    }
+
     let cartData = await userData.cartData;
 
-    cartData[itemId][size] = quantity;
+    if (!cartData[itemId] || cartData[itemId][size] === undefined) {
+      return sendFailure(res, "Cart item not found", 404);
+    }
+
+    cartData[itemId][size] = Number(quantity);
 
     await userModel.findByIdAndUpdate(userId, { cartData });
 
-    res.json({
-      success: true,
-      message: "Cart Updated",
-    });
+    return sendSuccess(res, { message: "Cart Updated" });
   } catch (error) {
-    console.log(error);
-    res.json({
-      success: false,
-      message: error.message,
-    });
+    return handleControllerError(res, error, "updateCart");
   }
 };
 
@@ -63,20 +88,23 @@ const updateCart = async (req, res) => {
 const getUserCart = async (req, res) => {
   try {
     const { userId } = req.body;
+    const validationError = requireFields(req.body, ["userId"]);
+
+    if (validationError) {
+      return sendFailure(res, validationError, 400);
+    }
 
     const userData = await userModel.findById(userId);
+
+    if (!userData) {
+      return sendFailure(res, "User not found", 404);
+    }
+
     let cartData = await userData.cartData;
 
-    res.json({
-      success: true,
-      cartData,
-    });
+    return sendSuccess(res, { cartData });
   } catch (error) {
-    console.log(error);
-    res.json({
-      success: false,
-      message: error.message,
-    });
+    return handleControllerError(res, error, "getUserCart");
   }
 };
 

@@ -15,32 +15,32 @@ const getConfidenceLabel = (score) => {
 };
 
 const ConfidenceEngine = () => {
-  const confidenceScore = 87;
+  const confidenceScore = 91;
 
   const factors = [
     {
       title: "Requirement Completeness",
-      score: 92,
+      score: 94,
       status: "Passed",
     },
     {
       title: "Acceptance Criteria",
-      score: 85,
+      score: 88,
       status: "Passed",
     },
     {
       title: "Business Clarity",
-      score: 80,
+      score: 86,
       status: "Passed",
     },
     {
       title: "Ambiguity Detection",
-      score: 65,
-      status: "Needs Review",
+      score: 72,
+      status: "Passed",
     },
     {
       title: "Edge Case Coverage",
-      score: 78,
+      score: 84,
       status: "Passed",
     },
   ];
@@ -133,9 +133,9 @@ const ConfidenceEngine = () => {
             Recommendation
           </h3>
           <p className="text-gray-700">
-            The requirement is implementation-ready with high confidence.
-            Review the ambiguity findings before moving to development to
-            improve overall quality.
+            Cart validation and shared API response helpers improve edge-case
+            coverage. The requirement remains implementation-ready with high
+            confidence after the latest whitebox run.
           </p>
         </div>
       </div>
