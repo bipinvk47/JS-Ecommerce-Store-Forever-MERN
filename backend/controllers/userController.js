@@ -12,6 +12,13 @@ const loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
 
+    if (!email || !password) {
+      return res.json({
+        success: false,
+        message: "Email and password are required",
+      });
+    }
+
     const user = await userModel.findOne({ email });
 
     if (!user) {
@@ -45,6 +52,13 @@ const loginUser = async (req, res) => {
 const registerUser = async (req, res) => {
   try {
     const { name, email, password } = req.body;
+
+    if (!name || !email || !password) {
+      return res.json({
+        success: false,
+        message: "Name, email, and password are required",
+      });
+    }
 
     // checking if user already exists or not
     const exist = await userModel.findOne({ email });

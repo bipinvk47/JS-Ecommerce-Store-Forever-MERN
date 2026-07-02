@@ -14,6 +14,13 @@ const placeOrder = async (req, res) => {
   try {
     const { userId, items, amount, address } = req.body;
 
+    if (!userId || !items?.length || !amount || !address) {
+      return res.json({
+        success: false,
+        message: "User, items, amount, and address are required",
+      });
+    }
+
     const orderData = {
       userId,
       items,

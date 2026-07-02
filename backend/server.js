@@ -36,8 +36,9 @@ app.get("/api/health", (req, res) => {
   res.json({
     status: "ok",
     service: "ecommerce-backend",
-    triggerTest: "TP-1313-pr-merge",
-    version: 1,
+    triggerTest: "TP-1313-nested-merge-2",
+    version: 2,
+    branch: "feature/TP-1313-nested-merge",
   });
 });
 
